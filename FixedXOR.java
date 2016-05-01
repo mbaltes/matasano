@@ -28,7 +28,8 @@ public class FixedXOR {
     }
 
     public static void main(String[] args) {
-        String x = fxor("1c0111001f010100061a024b53535009181c", "686974207468652062756c6c277320657965");
+        String x = fxor("1c0111001f010100061a024b53535009181c", 
+                        "686974207468652062756c6c277320657965");
         System.out.println(x);
     }
 }
