@@ -31,4 +31,33 @@ def encode_xor_cipher(key, text):
     return binascii.hexlify(res)
 
 
-print(decode_xor_cipher(cipher_text))
+def encode_repeating_key_xor(file, key):
+    """Encrypts a file with repeating-key xor with the given key. """
+    temp = []
+    # ret = []
+    i = 0
+    with open(file) as file:
+        for line in file:
+            for n in line:
+                if i < len(key):
+                    temp.append(chr(ord(n) ^ ord(key[i])))
+                    i += 1
+                else:
+                    i = 0
+                    temp.append(chr(ord(n) ^ ord(key[i])))
+                    i += 1
+            res = ''.join(temp)
+            # ret.append(binascii.hexlify(res))
+            print(binascii.hexlify(res))
+            res = ''
+            # temp = []
+            del temp[:]
+        # return ret
+
+
+def repeating_key_decode(l):
+    for x in l:
+        print(decode_xor_cipher(x))
+
+
+encode_repeating_key_xor('secret.txt', 'Password')
