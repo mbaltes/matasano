@@ -1,4 +1,5 @@
 import binascii
+import base64
 
 cipher_text = '1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'
 
@@ -60,4 +61,10 @@ def repeating_key_decode(l):
         print(decode_xor_cipher(x))
 
 
-encode_repeating_key_xor('secret.txt', 'Password')
+# encode_repeating_key_xor('secret.txt', 'Password')
+
+# a = decode_xor_cipher(cipher_text)
+# print a[1]
+
+#print base64.b64decode(cipher_text)
+print binascii.unhexlify(cipher_text)
