@@ -1,5 +1,14 @@
 import binascii
 import base64
+import collections
+
+
+def score_plaintext(s):
+    count = 0
+    for i in s:
+        if 'a'<=i<='z' or 'A'<=i<='Z':
+            count += 1
+    return float(count) / len(s)
 
 
 def decode_xor_cipher(s):
@@ -9,36 +18,57 @@ def decode_xor_cipher(s):
         for j in binascii.unhexlify(s):
             temp.append(chr(ord(j) ^ i))
         res.append([score_plaintext(temp), ''.join(temp)])
-    #return res
-    return max(res, key=lambda x: x[0])
+    return res
+    #return max(res, key=lambda x: x[0])
 
 
 def break_repeated_xor(file):
     res = []
     s = file_to_str(file)
-    keys = guess_keysize(s)
-    for e in keys:
-        b = block(s, e[1])
-        print b
-        #l = transpose(b)
-        #print l
-        break
-    #     # solve each block as if singlecharxor
-    #     for x in l:
-    #         print x
-    #         # res.append(temp[1])
-    # return res
+    keys = guess_keysize(s)  # keys = [(1, 5), (2, 2), (2, 3)]
+    for e in keys: 
+        if e[1] == 29:
+            print 'Key Length: 29'
+            m = ''
+            b = block(s, e[1])  # ['str of len 5', etc]
+            l = transpose(b, e[1])  # ['transposed str of len 5', etc]
+            #print l
+            # solve each block as if singlecharxor
+            top = 0
+            for x in l:
+                #res.append(decode_xor_cipher(binascii.hexlify(x)))
+                #res.append(decode_xor_cipher(x))
+                m = decode_xor_cipher(x)
+                for y, z in m:
+                    temp = collections.Counter(z).most_common(1)[0][1]
+                    if temp > top:
+                        top = temp
+                print top
+                break
+            #print res
+            # for c, d in res:
+            #     print collections.Counter(d).most_common(1)[0]
+                #print collections.Counter(d).most_common(1)
+                # temp = temp[0]
+                #print d.replace('\n', '')
+                #m += temp
+                #print c, d
+    #         #print m
+    # #return res
 
 
-def transpose(l):
+def transpose(list, size):
     """Transposes the blocks by making a block that is the first byte of 
        every block, and a block that is the second byte of every block, etc.
        Returns a list of transposed blocks.
     """
-    res = [[] for x in range(len(l))]
-    for outer, elem in enumerate(l):
+    res = [[] for x in range(size)]
+    for outer, elem in enumerate(list):
         for inner, x in enumerate(elem):
             res[inner].append(x)
+
+    for x, y in enumerate(res):
+        res[x] = ''.join(y)
     return res
 
 
@@ -59,15 +89,15 @@ def file_to_str(file):
     l = []
     with open(file) as file:
         for line in file:
-            #l.append(line)
-            #l.append(''.join(line.split()))
-            line = ''.join(line.split())
             l.append(line)
+            #l.append(''.join(line.split()))
     res = ''.join(l)
     #return res
     #return base64.b64decode(res)
     #res = binascii.unhexlify(res)
-    return res.decode("base64")
+    res = res.decode("base64")
+    res = res.encode("hex")
+    return res
 
 
 def guess_keysize(s):
@@ -84,7 +114,8 @@ def guess_keysize(s):
         keysize.add((temp, n))
     ret = list(keysize)
     ret.sort()
-    return ret[:3]
+    #return ret[:3]
+    return ret
 
 
 def hamming_dist(a, b):
@@ -99,7 +130,10 @@ def hamming_dist(a, b):
     return(count)
 
 
+
 break_repeated_xor('6.txt')
+# print len(m)
+# print m
 
 
 # a = hamming_dist('hello world', 'hello world')
@@ -111,7 +145,7 @@ break_repeated_xor('6.txt')
 
 # f = file_to_str('6.txt')
 # print(f)
-#print(type(f))
+# print(type(f))
 
 # g = guess_keysize2(file_to_str('6.txt'))
 # print(g)
@@ -119,8 +153,8 @@ break_repeated_xor('6.txt')
 # r = block(file_to_str('6.txt'), 5)
 # print r
 
-# test = [[1, 2, 3],[4, 5, 6],[7, 8, 9]]
-# l = transpose(test)
+# test = [['a', 'b', 'c'],['d', 'e', 'f'],['g', 'h', 'i']]
+# l = transpose(test, 3)
 # print l
 
 
