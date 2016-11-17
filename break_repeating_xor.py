@@ -24,37 +24,41 @@ def decode_xor_cipher(s):
 
 def break_repeated_xor(file):
     res = []
+    words = []
     s = file_to_str(file)
+    #print s
     keys = guess_keysize(s)  # keys = [(1, 5), (2, 2), (2, 3)]
+    #print keys
     for e in keys: 
-        if e[1] == 29:
-            print 'Key Length: 29'
-            m = ''
-            b = block(s, e[1])  # ['str of len 5', etc]
-            l = transpose(b, e[1])  # ['transposed str of len 5', etc]
-            #print l
-            # solve each block as if singlecharxor
-            top = 0
-            for x in l:
-                #res.append(decode_xor_cipher(binascii.hexlify(x)))
-                #res.append(decode_xor_cipher(x))
-                m = decode_xor_cipher(x)
-                for y, z in m:
-                    temp = collections.Counter(z).most_common(1)[0][1]
-                    if temp > top:
-                        top = temp
-                print top
-                break
-            #print res
-            # for c, d in res:
-            #     print collections.Counter(d).most_common(1)[0]
-                #print collections.Counter(d).most_common(1)
-                # temp = temp[0]
-                #print d.replace('\n', '')
-                #m += temp
-                #print c, d
-    #         #print m
-    # #return res
+        #if e[1] == 29:
+        print 'Key Length: %s' % e[1]
+        m = ''
+        b = block(s, e[1])  # ['str of len 5', etc]
+        l = transpose(b, e[1])  # ['transposed str of len 5', etc]
+        print l
+        # solve each block as if singlecharxor
+        for x in l:
+            res.append(decode_xor_cipher(binascii.hexlify(x)))
+            #res.append(decode_xor_cipher(x))
+            #break
+        #print res
+        top = ''
+        for i, d in enumerate(res):
+            temp = collections.Counter(d[i][1]).most_common(1)[0]
+            top += temp[0]
+            #words.append(''.join(top))
+            #break
+            #print collections.Counter(d).most_common(1)[0]
+            #print collections.Counter(d).most_common(1)
+            #temp = temp[0]
+            # print d.replace('\n', '')
+            # m += temp
+            #print c, d
+            #m += d
+        print top
+        res = []
+    #return res
+    #return top
 
 
 def transpose(list, size):
@@ -96,7 +100,7 @@ def file_to_str(file):
     #return base64.b64decode(res)
     #res = binascii.unhexlify(res)
     res = res.decode("base64")
-    res = res.encode("hex")
+    #res = res.encode("hex")
     return res
 
 
@@ -133,7 +137,7 @@ def hamming_dist(a, b):
 
 break_repeated_xor('6.txt')
 # print len(m)
-# print m
+#print m
 
 
 # a = hamming_dist('hello world', 'hello world')

@@ -61,10 +61,10 @@ def encode_repeating_key_xor(file, key):
 #         print(decode_xor_cipher(x))
 
 
-# encode_repeating_key_xor('secret.txt', 'Password')
+encode_repeating_key_xor('secret.txt', 'Password')
 
-a = decode_xor_cipher(cipher_text)
-print a[1]
+# a = decode_xor_cipher(cipher_text)
+# print a[1]
 
 #print base64.b64decode(cipher_text)
 #print binascii.unhexlify(cipher_text)
