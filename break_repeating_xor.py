@@ -26,37 +26,37 @@ def break_repeated_xor(file):
     res = []
     words = []
     s = file_to_str(file)
-    #print s
-    keys = guess_keysize(s)  # keys = [(1, 5), (2, 2), (2, 3)]
-    #print keys
-    for e in keys: 
-        #if e[1] == 29:
-        print 'Key Length: %s' % e[1]
-        m = ''
-        b = block(s, e[1])  # ['str of len 5', etc]
-        l = transpose(b, e[1])  # ['transposed str of len 5', etc]
-        print l
-        # solve each block as if singlecharxor
-        for x in l:
-            res.append(decode_xor_cipher(binascii.hexlify(x)))
-            #res.append(decode_xor_cipher(x))
-            #break
-        #print res
-        top = ''
-        for i, d in enumerate(res):
-            temp = collections.Counter(d[i][1]).most_common(1)[0]
-            top += temp[0]
-            #words.append(''.join(top))
-            #break
-            #print collections.Counter(d).most_common(1)[0]
-            #print collections.Counter(d).most_common(1)
-            #temp = temp[0]
-            # print d.replace('\n', '')
-            # m += temp
-            #print c, d
-            #m += d
-        print top
-        res = []
+    print s
+    # keys = guess_keysize(s)  # keys = [(1, 5), (2, 2), (2, 3)]
+    # #print keys
+    # for e in keys: 
+    #     #if e[1] == 29:
+    #     print 'Key Length: %s' % e[1]
+    #     m = ''
+    #     b = block(s, e[1])  # ['str of len 5', etc]
+    #     l = transpose(b, e[1])  # ['transposed str of len 5', etc]
+    #     print l
+    #     # solve each block as if singlecharxor
+    #     for x in l:
+    #         res.append(decode_xor_cipher(binascii.hexlify(x)))
+    #         #res.append(decode_xor_cipher(x))
+    #         #break
+    #     #print res
+    #     top = ''
+    #     for i, d in enumerate(res):
+    #         temp = collections.Counter(d[i][1]).most_common(1)[0]
+    #         top += temp[0]
+    #         #words.append(''.join(top))
+    #         #break
+    #         #print collections.Counter(d).most_common(1)[0]
+    #         #print collections.Counter(d).most_common(1)
+    #         #temp = temp[0]
+    #         # print d.replace('\n', '')
+    #         # m += temp
+    #         #print c, d
+    #         #m += d
+    #     print top
+    #     res = []
     #return res
     #return top
 

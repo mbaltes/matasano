@@ -2,14 +2,17 @@
 # xor is solid. Work my way up.
 
 import collections
+import base64
 
 
 def break_repeated_xor(file):
     res = []
     words = []
     s = file_to_str(file)
+    #print s
     keys = guess_keysize(s)  # keys = [(1, 5), (2, 2), (2, 3)]
     print keys
+    # print keys
     # for e in keys: 
     #     if e[1] == 29:
     #         b = block(s, e[1])  # ['str of len 5', etc]
@@ -73,37 +76,26 @@ def block(str, size):
     return res
 
 
-def file_to_str(file):
-    l = []
-    with open(file) as file:
-        for line in file:
-            l.append(line)
-            #l.append(''.join(line.split()))
-    res = ''.join(l)
-    #return res
-    #return base64.b64decode(res)
-    #res = binascii.unhexlify(res)
-    res = res.decode("base64")
-    #res = res.encode("hex")
-    return res
+def file_to_str(f):
+    with open(f) as f:
+        cipher = f.read()
+    return cipher.decode('base64')
 
 
 def guess_keysize(s):
     """Guesses size of the encryption key from incoming string.
-       Returns list of tuples in the form (hamming dist, keysize).
+       Returns list of results in the form [hamming dist, keysize].
        Only returns the 3 smallest hamming dist keysizes. 
     """
-    keysize = set()
+    keysize = []
     start, end = 2, 40
     for n in range(start, end):
         r = n + n
         if r > len(s): break
         temp = hamming_dist(s[:n], s[n:r]) / float(n)
-        keysize.add((temp, n))
-    ret = list(keysize)
-    ret.sort()
-    #return ret[:3]
-    return ret
+        keysize.append([temp, n])
+    keysize.sort()
+    return keysize
 
 
 def to_bin(s):
@@ -213,12 +205,19 @@ def hex_to_64(s):
     return t.encode('base64').strip()
 
 
-#break_repeated_xor('6.txt')
+#print hamming_dist('this is a test', 'wokka wokka!!!')
 
-a = file_to_str('6.txt')
-b = guess_keysize(a)
-print b
+break_repeated_xor('6.txt')
+
+# a = file_to_str('6.txt')
+# b = guess_keysize(a)
+# print b
 # avg = 0
 # for x in b:
 #     avg += x[1]
 # print avg / len(b)
+
+# a = 'hello'
+# a = a.encode('base64')
+# print a
+# print a.decode('base64')
