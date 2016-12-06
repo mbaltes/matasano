@@ -49,9 +49,11 @@ def break_repeated_xor(file):
     # #return top
 
 def transpose(list, size):
-    """Transposes the blocks by making a block that is the first byte of 
-       every block, and a block that is the second byte of every block, etc.
-       Returns a list of transposed blocks.
+    """
+    Transposes the blocks by making a block that is the first byte of every 
+    block, and a block that is the second byte of every block, etc.
+    Returns a list of transposed blocks.
+
     """
     res = [[] for x in range(size)]
     for outer, elem in enumerate(list):
@@ -64,8 +66,10 @@ def transpose(list, size):
 
 
 def block(str, size):
-    """Blocks ciphertext into blocks of keysize length. Returns list of 
-       these blocks.
+    """
+    Blocks ciphertext into blocks of keysize length. Returns list of these 
+    blocks.
+
     """
     res = []
     count = 0
@@ -83,9 +87,11 @@ def file_to_str(f):
 
 
 def guess_keysize(s):
-    """Guesses size of the encryption key from incoming string.
-       Returns list of results in the form [hamming dist, keysize].
-       Only returns the 3 smallest hamming dist keysizes. 
+    """
+    Guesses size of the encryption key from incoming string. Returns list of 
+    results in the form [hamming dist, keysize]. Only returns the 3 smallest 
+    hamming dist keysizes. 
+
     """
     keysize = []
     start, end = 2, 40
@@ -203,21 +209,3 @@ def hex_to_64(s):
     """Returns the hex encoded string s to a base64 encoded string."""
     t = s.decode('hex')
     return t.encode('base64').strip()
-
-
-#print hamming_dist('this is a test', 'wokka wokka!!!')
-
-break_repeated_xor('6.txt')
-
-# a = file_to_str('6.txt')
-# b = guess_keysize(a)
-# print b
-# avg = 0
-# for x in b:
-#     avg += x[1]
-# print avg / len(b)
-
-# a = 'hello'
-# a = a.encode('base64')
-# print a
-# print a.decode('base64')
