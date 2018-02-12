@@ -1,3 +1,7 @@
+# These functions are deprecated. Written in python 2 and incomplete.
+# See the rewritten functions in new_crypto_tools.
+
+
 # TODO: Find correct order of decryption sequence. Make sure decode single
 # xor is solid. Work my way up.
 
