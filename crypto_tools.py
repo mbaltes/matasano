@@ -4,6 +4,7 @@
 
 # TODO: Find correct order of decryption sequence. Make sure decode single
 # xor is solid. Work my way up.
+#
 
 import collections
 import base64
