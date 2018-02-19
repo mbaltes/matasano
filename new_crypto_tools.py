@@ -106,6 +106,24 @@ def byte_list_to_words(l):
             temp = ''
     return count
 
+
+# Set 1 challenge 5
+def encode_repeating_key_xor(file, key):
+    f = file_to_str(file)
+    res, out = [], []
+    for line in f:
+        for c in line:
+            res.append(ord(c))
+    i = 0
+    for n in bytes(res):
+        if i < len(key):
+            out.append(n ^ ord(key[i]))
+            i += 1
+        else:
+            i = 0
+            out.append(n ^ ord(key[i]))
+            i += 1
+    return binascii.hexlify(bytes(out))
+
+
 ENGLISH_WORDS = get_word_list()
-
-
