@@ -4,6 +4,31 @@ import base64
 import string
 
 
+# Set 1.4
+def detect_xor_cipher(file):
+    res = []
+    score = 0
+    max_entry = 0
+    with open(file) as f:
+        for line in f:
+            key = find_xor_cipher_key(line.strip())
+            plaintext = decode_xor_cipher(line.strip(), key)
+            #print(count, plaintext)
+            res.append(plaintext)
+    for i, entry in enumerate(res):
+        #j = score_plaintext(entry)
+        j = byte_list_to_words(entry)
+        if j > score:
+            score = j
+            max_entry = i
+    return max_entry, res[max_entry]
+
+def file_to_str(f):
+    with open(f) as f:
+        cipher = f.read()
+    return cipher
+
+
 def decode_xor_cipher(s, key):
     s = codecs.decode(s, 'hex')
     res = []
@@ -26,12 +51,13 @@ def find_xor_cipher_key(s):
     s = codecs.decode(s, 'hex')
     ratio = []
     res = []
-    for i in range(256):
+    for i in range(128): # 256 is whole ascii table, 128 is mostly a-z, A-Z
         for j in s:
             res.append(j ^ i)
         # run freq analysis here
         #print(i, score_plaintext(bytes(res)))
-        ratio.append(score_plaintext(bytes(res)))
+        #ratio.append(score_plaintext(bytes(res)))
+        ratio.append(byte_list_to_words(bytes(res)))
         res = []
     max_value = max(ratio)
     max_index = ratio.index(max_value)
@@ -58,8 +84,28 @@ def hex_to_64(s):
     return base64.b64encode(t)
 
 
-k = find_xor_cipher_key('1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736')
+def get_word_list():
+    s = set()
+    with open('english-words-10k.txt') as file:
+        for f in file:
+            s.add(f.strip())
+    return s
 
-solution = decode_xor_cipher('1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736', k)
 
-print(solution)
+def byte_list_to_words(l):
+    words = ENGLISH_WORDS
+    count = 0
+    temp = ''
+    for c in l:
+        if chr(c) in string.ascii_letters:
+            temp += chr(c).lower()
+        else:
+            if temp in words and len(temp) > 1:
+                #print(temp)
+                count += 1
+            temp = ''
+    return count
+
+ENGLISH_WORDS = get_word_list()
+
+
